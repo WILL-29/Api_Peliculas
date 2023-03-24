@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Api_Peliculas.Model;
+using Api_Peliculas.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 

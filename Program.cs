@@ -1,6 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
+
+//Configuramos el dbcontext que se usará para conectarse a SQL
+builder.Services.AddDbContext<ApiPeliculasContext>(opciones => 
+{
+    opciones.UseSqlServer(builder.Configuration.GetConnectionString("ConexionSql"));
+});
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

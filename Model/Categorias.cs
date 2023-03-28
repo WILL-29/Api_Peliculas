@@ -16,5 +16,6 @@ namespace Api_Peliculas.Model
         ApiPeliculasContext db = new ApiPeliculasContext();
         var Categorias = db.Categorias.ToList();
         return Categorias;
+        //test
     }
 }

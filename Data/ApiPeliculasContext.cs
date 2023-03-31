@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Api_Peliculas.Model;
-//using System.Data.Entity;
+using System.Data;
 
 namespace Api_Peliculas.Data
 {
@@ -9,6 +9,6 @@ namespace Api_Peliculas.Data
         public ApiPeliculasContext(DbContextOptions<ApiPeliculasContext> options) : base(options)
         {            
         }
-        public DbSet<Categorias> Categorias { get; set; }
+        public DbSet<Categoria> Categoria { get; set; }
     }
 }

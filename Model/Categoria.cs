@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api_Peliculas.Model
 {
-    public class Categorias
+    public class Categoria
     {       
         [Key]
         public int ID_Categoria { get; set; }
@@ -11,10 +11,10 @@ namespace Api_Peliculas.Model
         public string Nombre_Cat { get; set; }
         public DateTime Fecha_Creacion { get; set; }
     }
-    public List<Categorias> obtenerCategorias()
-    {
-        ApiPeliculasContext db = new ApiPeliculasContext();
-        var Categorias = db.Categorias.ToList();
-        return Categorias;        
-    }
+    // public List<Categorias> obtenerCategorias()
+    // {
+    //     ApiPeliculasContext db = new ApiPeliculasContext();
+    //     var Categorias = db.Categorias.ToList();
+    //     return Categorias;        
+    // }
 }

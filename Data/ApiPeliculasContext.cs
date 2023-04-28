@@ -9,6 +9,7 @@ namespace Api_Peliculas.Data
         public ApiPeliculasContext(DbContextOptions<ApiPeliculasContext> options) : base(options)
         {            
         }
-        public DbSet<Categoria> Categoria { get; set; }
-    }
+        public DbSet<Categoria> Categoria {get; set;}
+        public DbSet<Pelicula> Pelicula {get; set;}
+    }    
 }

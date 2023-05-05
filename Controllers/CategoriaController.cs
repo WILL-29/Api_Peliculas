@@ -111,6 +111,9 @@ namespace Api_Peliculas.Controllers
             return NoContent();            
         }
         [HttpDelete("{id:int}", Name = "BorrarCategoria")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult BorrarCategoria(int id)
         {   
             if (!_ctRepo.ExisteCategoria(id))

@@ -17,6 +17,7 @@ builder.Services.AddDbContext<ApiPeliculasContext>(opciones =>
 
 //Agregamos los repositorios  -- todos los repositorios deben ser agregados aquí
 builder.Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+builder.Services.AddScoped<IPeliculaRepositorio, PeliculaRepositorio>();
 
 //Agregamos el AutoMapper, para que esto funcione debemos tener instalado el paquete AutoMapper.Extensions.Microsoft.DependencyInjections
 builder.Services.AddAutoMapper(typeof(ApiPeliculasMapper));

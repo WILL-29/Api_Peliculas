@@ -55,9 +55,9 @@ namespace Api_Peliculas.Repositorio
             return _db.Pelicula.Where(p => p.ID_Categoria == ID_Categoria).ToList();
             //return _db.Pelicula.(p => p.ID_Categoria == ID_Categoria).ToList();
         }
-        public ICollection<Pelicula> GetPeliculas(string nombre)      
+        public ICollection<Pelicula> BuscarPeliculas(string nombre)      
         {
-            return _db.Pelicula.Where(p => p.Nombre_Pel.Contains(nombre)).ToList();
+            return _db.Pelicula.Where(p => p.Nombre_Pel.Contains(nombre) || p.Descripcion.Contains(nombre)).ToList();
         }
         public bool Guardar()
         {

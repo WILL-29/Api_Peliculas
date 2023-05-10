@@ -3,7 +3,6 @@ using Api_Peliculas.Model;
 using Api_Peliculas.Repositorio.IRepositorio;
 using Api_Peliculas.Data;
 
-
 namespace Api_Peliculas.Repositorio
 {
     public class CategoriaRepositorio : ICategoriaRepositorio

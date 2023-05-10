@@ -4,6 +4,7 @@ using Api_Peliculas.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiPeliculas.Migrations
 {
     [DbContext(typeof(ApiPeliculasContext))]
-    partial class ApiPeliculasContextModelSnapshot : ModelSnapshot
+    [Migration("20230510002914_NuevaPCC")]
+    partial class NuevaPCC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,31 +77,6 @@ namespace ApiPeliculas.Migrations
                     b.HasKey("ID_Pelicula");
 
                     b.ToTable("Pelicula");
-                });
-
-            modelBuilder.Entity("Api_Peliculas.Model.Usuario", b =>
-                {
-                    b.Property<int>("ID_Usuario")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Usuario"));
-
-                    b.Property<string>("Nombre_Usuario")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("User_Usuario")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID_Usuario");
-
-                    b.ToTable("Usuario");
                 });
 #pragma warning restore 612, 618
         }

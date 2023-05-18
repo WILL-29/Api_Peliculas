@@ -8,6 +8,6 @@ namespace Api_Peliculas.Model.Dtos
     public class UsuarioLoginRespuestaDto
     {
         public Usuario Usuario { get; set; }
-        public string token { get; set; }
+        public string Token { get; set; }
     }
 }

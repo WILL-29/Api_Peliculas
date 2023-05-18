@@ -8,7 +8,8 @@ namespace Api_Peliculas.Repositorio.IRepositorio
         ICollection<Usuario> GetUsuarios();
         Usuario GetUsuario(int id);
         bool IsUnique(string usuario);
-        Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLogin);
         Task<UsuarioRegistroDto> Registro(UsuarioRegistroDto usuarioRegistro);
+        Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLogin);
+        
     }
 }

@@ -8,9 +8,11 @@ using Api_Peliculas.Model;
 using Api_Peliculas.Model.Dtos;
 using System.Security.Cryptography;
 using System.IdentityModel.Tokens.Jwt;
-using System.IdentityModel.Tokens;
-using System.IdentityModel;
+//using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Claims;
+
 
 
 namespace Api_Peliculas.Repositorio
@@ -54,11 +56,11 @@ namespace Api_Peliculas.Repositorio
             usuario.Password = PasswordEncriptado;
             return (usuario);
         }
-        public async Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLogin)
+        public async Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLoginDto)
         {
-            var PasswordEncriptado = ObtenerMd5(usuarioLogin.Password);
+            var PasswordEncriptado = ObtenerMd5(usuarioLoginDto.Password);
 
-            var usuario = _db.Usuario.FirstOrDefault(u => u.User_Usuario.ToLower() == usuarioLogin.User_Usuario.ToLower() && u.Password == usuarioLogin.Password);
+            var usuario = _db.Usuario.FirstOrDefault(u => u.User_Usuario.ToLower() == usuarioLoginDto.User_Usuario.ToLower() && u.Password == usuarioLoginDto.Password);
 
             if (usuario == null)
             {
@@ -68,17 +70,32 @@ namespace Api_Peliculas.Repositorio
                   Usuario = null
                 };
             }
-            
-            var manejadorToken = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(claveSecreta);
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            else
             {
+                var manejadorToken = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(claveSecreta);
 
-            };
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                        new Claim(ClaimTypes.Name, usuario.Nombre_Usuario.ToString()),
+                        new Claim(ClaimTypes.Role, usuario.Role)
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new (new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
 
-            throw new NotImplementedException();
-            //Esto se hará mañana
+                var token = manejadorToken.CreateToken(tokenDescriptor);
+
+                var usuarioLoginRespuestaDto = new UsuarioLoginRespuestaDto
+                {
+                    Token = manejadorToken.WriteToken(token),
+                    Usuario = usuario
+                };
+
+                return usuarioLoginRespuestaDto;
+            }
         }
 
         public static string ObtenerMd5 (string PalabraEncriptar)
@@ -90,7 +107,6 @@ namespace Api_Peliculas.Repositorio
             for (int i = 0; i < data.Length; i++)            
                 resp += data[i].ToString("x2").ToLower();
             return resp;
-        }
-        
+        }               
     }
 }

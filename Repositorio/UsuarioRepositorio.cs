@@ -1,4 +1,6 @@
 using System;
+//using System.Data;
+//using System.Data.Common;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -40,6 +43,18 @@ namespace Api_Peliculas.Repositorio
         {
             return _db.Usuario.Any(u => u.User_Usuario == usuario);
         }
+
+        public static string ObtenerMd5 (string PalabraEncriptar)
+        {
+            MD5CryptoServiceProvider x = new MD5CryptoServiceProvider();
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(PalabraEncriptar);
+            data = x.ComputeHash(data);
+            string resp = "";
+            for (int i = 0; i < data.Length; i++)            
+                resp += data[i].ToString("x2").ToLower();
+            return resp;
+        }
+
         public async Task<Usuario> Registro(UsuarioRegistroDto usuarioRegistroDto)
         {
             var PasswordEncriptado = ObtenerMd5(usuarioRegistroDto.Password);
@@ -59,9 +74,8 @@ namespace Api_Peliculas.Repositorio
         public async Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLoginDto)
         {
             var PasswordEncriptado = ObtenerMd5(usuarioLoginDto.Password);
-
-            var usuario = _db.Usuario.FirstOrDefault(u => u.User_Usuario.ToLower() == usuarioLoginDto.User_Usuario.ToLower() && u.Password == usuarioLoginDto.Password);
-
+            var usuario = _db.Usuario.FirstOrDefault(u => u.User_Usuario.ToLower() == usuarioLoginDto.User_Usuario.ToLower() 
+            && u.Password == usuarioLoginDto.Password);
             if (usuario == null)
             {
                 return new UsuarioLoginRespuestaDto()
@@ -98,15 +112,6 @@ namespace Api_Peliculas.Repositorio
             }
         }
 
-        public static string ObtenerMd5 (string PalabraEncriptar)
-        {
-            MD5CryptoServiceProvider x = new MD5CryptoServiceProvider();
-            byte[] data = System.Text.Encoding.UTF8.GetBytes(PalabraEncriptar);
-            data = x.ComputeHash(data);
-            string resp = "";
-            for (int i = 0; i < data.Length; i++)            
-                resp += data[i].ToString("x2").ToLower();
-            return resp;
-        }               
+        
     }
 }

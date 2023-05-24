@@ -21,6 +21,7 @@ namespace Api_Peliculas.Controllers
             _usRepo = usRepo;
             _mapper = mapper;
         }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -34,6 +35,24 @@ namespace Api_Peliculas.Controllers
             }
             //var usuarios = _usRepo.GetUsuarios;
             return Ok(listaUsuariosDto);
+        }
+
+        [HttpGet("{ID_Usuario:int}", Name = "GetUsuario")]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]        
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]        
+        [ProducesResponseType(StatusCodes.Status404NotFound)] 
+        [ProducesResponseType(StatusCodes.Status200OK)]           
+        public IActionResult ObtenerUsuario(int ID_Usuario)
+        {
+            var usuario = _usRepo.GetUsuario(ID_Usuario);
+
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            var usuarioDto = _mapper.Map<UsuarioDto>(usuario);
+            return Ok(usuarioDto);
         }
 
     }

@@ -39,9 +39,9 @@ namespace Api_Peliculas.Repositorio
             return _db.Usuario.FirstOrDefault(u => u.ID_Usuario == id);
         }
 
-        public bool IsUnique(string usuario)
+        public bool IsUniqueUser(string usuario)
         {
-            return _db.Usuario.Any(u => u.User_Usuario == usuario);
+            return !_db.Usuario.Any(u => u.User_Usuario == usuario);
         }
 
         public static string ObtenerMd5 (string PalabraEncriptar)
@@ -58,7 +58,7 @@ namespace Api_Peliculas.Repositorio
         public async Task<Usuario> Registro(UsuarioRegistroDto usuarioRegistroDto)
         {
             var PasswordEncriptado = ObtenerMd5(usuarioRegistroDto.Password);
-            var usuario = new Usuario()
+            var usuario = new Usuario
             {
                 User_Usuario = usuarioRegistroDto.User_Usuario,
                 Nombre_Usuario = usuarioRegistroDto.Nombre_Usuario,

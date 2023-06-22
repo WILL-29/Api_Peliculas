@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Api_Peliculas.Repositorio.IRepositorio;
 using AutoMapper;
 using Api_Peliculas.Model.Dtos;
+using Api_Peliculas.Model;
+using System.Net;
 
 namespace Api_Peliculas.Controllers
 {
@@ -14,11 +16,14 @@ namespace Api_Peliculas.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRepositorio _usRepo;
+        protected RespuestaApi _respuestaApi;
         private readonly IMapper _mapper;
+        
 
         public UsuarioController (IUsuarioRepositorio usRepo, IMapper mapper)
-        {
+        {            
             _usRepo = usRepo;
+            this._respuestaApi = new();
             _mapper = mapper;
         }
 
@@ -55,5 +60,35 @@ namespace Api_Peliculas.Controllers
             return Ok(usuarioDto);
         }
 
+        //Registrar usuario
+        [HttpPost("Registro")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
+        public async Task<IActionResult> Registro([FromBody] UsuarioRegistroDto usuarioRegistroDto)
+        {
+            bool ValidarNombreUsuarioUnico = _usRepo.IsUniqueUser(usuarioRegistroDto.User_Usuario);
+            if (ValidarNombreUsuarioUnico == false)
+            {
+                _respuestaApi.StatusCode = HttpStatusCode.BadRequest;
+                _respuestaApi.IsSuccess = false;
+                _respuestaApi.ErrorMessages.Add("El nombre de usuario ya existe");
+                return BadRequest();
+            }
+            
+            var usuario = await _usRepo.Registro(usuarioRegistroDto);
+            if (usuario == null)
+            {
+                _respuestaApi.StatusCode = HttpStatusCode.BadRequest;
+                _respuestaApi.IsSuccess = false;
+                _respuestaApi.ErrorMessages.Add("Error en el registro");
+                return BadRequest();
+            }
+
+            _respuestaApi.StatusCode = HttpStatusCode.OK;
+            _respuestaApi.IsSuccess = true;
+            return Ok(_respuestaApi);
+        }        
     }
 }

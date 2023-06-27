@@ -89,6 +89,30 @@ namespace Api_Peliculas.Controllers
             _respuestaApi.StatusCode = HttpStatusCode.OK;
             _respuestaApi.IsSuccess = true;
             return Ok(_respuestaApi);
-        }        
-    }
+        }   
+
+        //Login
+        [HttpPost("Login")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult>Login([FromBody] UsuarioLoginDto usuarioLoginDto)
+        {
+            var respuestaLogin = await _usRepo.Login(usuarioLoginDto);
+
+                    
+            if (respuestaLogin.Usuario == null || string.IsNullOrEmpty(respuestaLogin.Token))
+            {
+                _respuestaApi.StatusCode = HttpStatusCode.BadRequest;
+                _respuestaApi.IsSuccess = false;
+                _respuestaApi.ErrorMessages.Add("El nombre de usuario o contraseña son incorrectos");
+                return BadRequest();
+            }
+                      
+            _respuestaApi.StatusCode = HttpStatusCode.OK;
+            _respuestaApi.IsSuccess = true;
+            _respuestaApi.Result = respuestaLogin;
+            return Ok(_respuestaApi);
+        }             
+    }        
 }

@@ -71,11 +71,11 @@ namespace Api_Peliculas.Repositorio
             usuario.Password = PasswordEncriptado;
             return (usuario);
         }
-        public async Task<UsuarioLoginRespuestaDto> Login(UsuarioLoginDto usuarioLoginDto)
+        public async Task<UsuarioLoginRespuestaDto>Login(UsuarioLoginDto usuarioLoginDto)
         {
             var PasswordEncriptado = ObtenerMd5(usuarioLoginDto.Password);
-            var usuario = _db.Usuario.FirstOrDefault(u => u.User_Usuario.ToLower() == usuarioLoginDto.User_Usuario.ToLower() 
-            && u.Password == usuarioLoginDto.Password);
+            var usuario = _db.Usuario.FirstOrDefault(u => u.User_Usuario.ToLower() == usuarioLoginDto.User_Usuario.ToLower()
+            && u.Password == PasswordEncriptado);
             if (usuario == null)
             {
                 return new UsuarioLoginRespuestaDto()
